@@ -7,7 +7,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 export const mainListItems = (
 	<div>
-		<Link to="/" style={{ textDecoration: 'none', display: 'block', color: "white" }}>
+		<Link to="/dashboard" style={{ textDecoration: 'none', display: 'block', color: "white" }}>
 		<ListItem button>
 			<ListItemIcon>
 				<DashboardIcon style={{ color: "white" }} />
