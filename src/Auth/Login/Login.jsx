@@ -24,7 +24,7 @@ const Login = ({isAuthenticated, login, alert, loading, load }) => {
 	})
 
 	const {  email, password } = formData;
-
+//a
 	const handleChange = name => event => {
 		setFormData({ ...formData, [name]: event.target.value });
 	};
