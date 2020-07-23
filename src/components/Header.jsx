@@ -6,6 +6,9 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { makeStyles, withStyles } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import Avatar from '@material-ui/core/Avatar';
+import {logout} from '../Redux/actions/auth/auth'
+import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 const useStyles =makeStyles({
 	root:{
 		backgroundColor:"#ffffff",
@@ -27,7 +30,7 @@ const useStyles =makeStyles({
 	}
 })
 
-const Header = () => {
+const Header = ({ auth: { user }, logout }) => {
 	const classes = useStyles()
 	return (
 		<AppBar position="static" className={classes.root}>
@@ -42,7 +45,7 @@ const Header = () => {
 					</Grid>
 					<Grid item sm></Grid>
 					<Grid item className={classes.imageSize}>
-						<Avatar alt="Remy Sharp" src="https://s3.us-east-2.amazonaws.com/activa.one/abhijeetshikhar_1593579037271/avatars/1595252857518_abhi.jpg" />
+						<Avatar alt="Remy Sharp" src={user && user.avatar} />
 					</Grid>
 					<Grid item>
 						<IconButton>
@@ -56,8 +59,10 @@ const Header = () => {
 							</Badge>
 						</IconButton>
 						<IconButton>
+							<Link onClick={logout} to="/">
+								<PowerSettingsNewIcon  fontSize="small" />
+							</Link>
 							
-							<PowerSettingsNewIcon fontSize="small"/>
 							
 						</IconButton>
 					</Grid>
@@ -67,4 +72,10 @@ const Header = () => {
 	)
 }
 
-export default Header
+const mapStateToProps = state => ({
+	auth: state.auth //entire auth state,
+
+})
+
+export default connect(mapStateToProps, { logout })(Header);
+

@@ -1,40 +1,24 @@
 import React, { Fragment } from 'react';
 import './App.css';
-import SideMEnu from './components/SideMEnu';
-import { makeStyles, CssBaseline } from '@material-ui/core';
-import Header from './components/Header';
-import Login from './Auth/Login/Login';
-import Signup from './Auth/Signup/Signup'
-import HomeNavbar from './Home/HomeNavbar'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-
 import Routes from './Routes';
+import setAuthToken from './Redux/utils/setAuth'
+import { Provider } from 'react-redux'
+import { store, persistor } from './Redux/store';
+import { PersistGate } from 'redux-persist/integration/react'
 
-const useStyles = makeStyles({
-  appMain: {
-    paddingLeft: "220px",
-    width: "100%",
-    zIndex: "2px"
-  }
-})
-
-function App() {
-  const classes = useStyles()
+if (localStorage.token) {
+  setAuthToken(localStorage.token)
+}
+function App(props) {
+  
   return (
-    <Fragment>
-      {/* <Route path="/login" exact component={Login}/>
-      <Route path="/register" exact component={Signup}/>
-      <Route path ="/" exact component={HomeNavbar}/> */}
-    <Router>
-      <div className={classes.appMain}>
-        <SideMEnu />
-        <Header />
-        <Routes />
-      </div>
-      <CssBaseline />
-    </Router>
-    </Fragment>
+    <>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Routes />
+        </PersistGate>
+      </Provider>
+    </>
 
 
   );

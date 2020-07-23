@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Login from '../Auth/Login/Login'
 //styles
 
 
@@ -14,6 +15,7 @@ export default function HomeNavbar() {
 	const classes = useStyles();
 
 	return (
+		<Fragment>
 		<div className={classes.root}>
 			<AppBar position="static">
 				<Toolbar>
@@ -27,5 +29,7 @@ export default function HomeNavbar() {
 				</Toolbar>
 			</AppBar>
 		</div>
+		
+		</Fragment>
 	);
 }

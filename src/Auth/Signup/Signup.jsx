@@ -1,17 +1,43 @@
-import React from 'react';
+import React,{useState} from 'react';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { Paper,Avatar,Button,CssBaseline,Link,Grid,Container,TextField } from '@material-ui/core'
-
-
+import { Paper, Avatar, Button, CssBaseline, Grid, Container, TextField } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import SnackBar from '../../Common/SnackBar'
 //styles
 import useStyles from "./Style"
+import Layout from '../../Layout/Layout';
 
+//Redux
 
-export default function Signup() {
+import { connect } from 'react-redux';
+import { setAlert } from '../../Redux/actions/alert/alert'
+import { register } from '../../Redux/actions/auth/auth'
+import {loader} from '../../Redux/actions/loader/loader'
+
+const Signup = ({ register, alert,  loading,load })=> {
 	const classes = useStyles();
+	const [formData,setFormData]= useState({
+		name:"",
+		email:"",
+		password:""
+	})
+
+	const { name, email, password } = formData;
+
+	const handleChange = name => event => {
+		setFormData({ ...formData, [name]: event.target.value });
+	};
+
+	const clickSubmit = event => {
+		event.preventDefault();
+			register({ name, email, password })
+	};
 
 	return (
+		<Layout>
+		<SnackBar type={alert.type} message={alert.message} open={alert.open} onClose={alert.handleClose} />
 		<Container component="main" maxWidth="xs">
 			<Paper className={classes.pageContent}>
 				<CssBaseline />
@@ -35,9 +61,10 @@ export default function Signup() {
 									id="firstName"
 									label="First Name"
 									autoFocus
+									value={name}
+									onChange={handleChange("name")}
 								/>
 							</Grid>
-
 							<Grid item xs={12}>
 								<TextField
 									variant="outlined"
@@ -48,6 +75,8 @@ export default function Signup() {
 									label="Email Address"
 									name="email"
 									autoComplete="email"
+									value={email}
+									onChange={handleChange("email")}
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -61,9 +90,10 @@ export default function Signup() {
 									type="password"
 									id="password"
 									autoComplete="current-password"
+									value={password}
+									onChange={handleChange("password")}
 								/>
 							</Grid>
-
 						</Grid>
 						<Button
 							type="submit"
@@ -71,12 +101,15 @@ export default function Signup() {
 							variant="contained"
 							className={classes.submit}
 							style={{ backgroundColor: "#1976d2", color: "white" }}
+							onClick={clickSubmit}
 						>
-							Sign Up
+								{
+									load ? (<CircularProgress size={25} style={{ color: "white" }} />) : "REgister"
+								}
           				</Button>
 						<Grid container justify="flex-end">
 							<Grid item>
-								<Link href="#" variant="body2">
+								<Link to="/" variant="body2">
 									Already have an account? Sign in
              					</Link>
 							</Grid>
@@ -85,5 +118,14 @@ export default function Signup() {
 				</div>
 			</Paper>
 		</Container>
+		</Layout>
 	);
 }
+
+const mapStateToProps = state => ({
+	isAuthenticated: state.auth.isAuthenticated,
+	alert: state.alert,
+	load: state.loader.loading,
+});
+
+export default connect(mapStateToProps, { setAlert,  register, loader })(Signup);
